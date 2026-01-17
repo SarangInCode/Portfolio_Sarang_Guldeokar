@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sarang Guldeokar | Software Developer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Inter, system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* HERO */
+        #hero-canvas {
+            position: absolute;
+            inset: 0;
+            z-index: -2;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, .45);
+            z-index: -1;
+        }
+
+       .gradient-text {
+  background: linear-gradient(
+    90deg,
+    #2174fa,
+    #5445ff,
+    #2c0c79,
+    #0a68ff
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: gradientMove 11s ease-in-out infinite;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+        /* PROJECT CARD */
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform .4s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .project-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, .75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: .4s;
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .project-overlay span {
+            transform: scale(.9);
+            transition: .4s;
+        }
+
+        .project-card:hover .project-overlay span {
+            transform: scale(1.15);
+        }
+
+        /* MODAL */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+
+        .modal-content {
+            background: white;
+            width: 60vw;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border-radius: 18px;
+            padding: 32px;
+            transform: scale(.9);
+            opacity: 0;
+            transition: .4s;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            font-size: 22px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- HERO -->
+    <section class="relative h-screen flex items-center justify-center text-center">
+        <canvas id="hero-canvas"></canvas>
+        <div class="hero-overlay"></div>
+
+        <div class="z-10 px-6">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white">
+                Hi, I’m <span class="gradient-text">Sarang Guldeokar</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto mb-8">
+                Software Developer | CSE | Backend • Systems • Security
+            </p>
+
+            <!-- PRIMARY CTA ROW -->
+            <div class="flex justify-center gap-6 mt-8">
+                <a href="#projects" class="group relative h-12 px-8 flex items-center justify-center rounded-full
+            bg-gradient-to-r from-blue-500 to-purple-600 text-white
+            transition-all duration-500 hover:scale-105
+            hover:shadow-[0_0_30px_rgba(99,102,241,.6)]">
+                    View Projects
+                    <span class="absolute inset-0 rounded-full blur-xl opacity-0
+                 bg-gradient-to-r from-blue-500 to-purple-600
+                 transition-opacity duration-500 group-hover:opacity-60"></span>
+                </a>
+
+                <a href="#contact" class="h-12 px-8 flex items-center justify-center rounded-full
+            border border-white text-white transition-all duration-500
+            hover:scale-105 hover:bg-white hover:text-gray-900">
+                    Contact Me
+                </a>
+            </div>
+
+            <!-- RESUME CTA (CENTERED BELOW) -->
+            <div class="flex justify-center mt-4">
+                <button onclick="openResume()" class="group relative flex items-center gap-3
+           px-7 py-3 rounded-full
+           bg-white/10 backdrop-blur
+           text-white border border-white/30
+           transition-all duration-500
+           hover:scale-105
+           hover:bg-white hover:text-gray-900
+           hover:shadow-[0_0_25px_rgba(255,255,255,0.35)]">
+
+                    <i class="fas fa-file-pdf text-red-400 group-hover:text-red-600 text-lg"></i>
+                    <span class="font-medium">View Resume</span>
+                </button>
+            </div>
+
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center">
+
+            <div class="md:w-1/2 mb-10">
+                <div class="relative w-72 h-72 mx-auto group">
+                    <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600
+rounded-full blur-xl opacity-30 transition-all duration-700
+group-hover:opacity-60 group-hover:scale-110"></div>
+                    <img src="img.jpg" alt="Sarang Guldeokar" class="relative w-full h-full rounded-full object-cover object-top
+border-4 border-white shadow-xl transition-all duration-700
+group-hover:scale-105">
+                </div>
+            </div>
+
+            <div class="md:w-1/2 md:pl-12">
+                <h2 class="text-4xl font-bold mb-6">About Me</h2>
+                <p class="text-lg text-gray-600 mb-6">
+                    I am a Computer Science Engineering student and aspiring software developer with strong interest in
+                    backend systems, cybersecurity, distributed computing, and low-level engineering. I focus on
+                    real-world projects and performance-oriented problem solving.
+                </p>
+
+                <h2 class="text-3xl font-bold mb-4">Skills</h2>
+                <div class="flex flex-wrap gap-3">
+                    <span class="px-4 py-2 bg-gray-100 rounded-full">Java</span>
+                    <span class="px-4 py-2 bg-gray-100 rounded-full">Python</span>
+                    <span class="px-4 py-2 bg-gray-100 rounded-full">DSA</span>
+                    <span class="px-4 py-2 bg-gray-100 rounded-full">Backend</span>
+                    <span class="px-4 py-2 bg-gray-100 rounded-full">Cybersecurity</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12">Projects</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                <!-- 1 -->
+                <div class="project-card bg-white p-6 rounded-xl shadow" onclick="openModal(
+'AI Threat Detection System',
+'AI-driven anomaly detection system that learns normal behavior patterns.',
+'Python, Scikit-learn, Pandas, Cybersecurity',
+['Behavior-based detection','Rule + ML hybrid','Real-time alerts','Low false positives'],
+'Improved detection accuracy and faster incident response.',
+'https://github.com/yourusername/ai-threat-detection',
+'https://your-demo-link.com'
+)">
+                    <h3 class="font-bold text-xl mb-2">AI Threat Detection</h3>
+                    <p class="text-gray-500">Cybersecurity</p>
+                    <div class="project-overlay"><span class="text-white">View Project</span></div>
+                </div>
+
+                <!-- 2 -->
+                <div class="project-card bg-white p-6 rounded-xl shadow" onclick="openModal(
+'Edge Computing – Low Latency',
+'Edge-based processing to reduce cloud dependency.',
+'Python, Flask, Networking',
+['Local edge processing','Latency reduction','Client-server demo'],
+'Lower response time vs cloud-only systems.',
+'https://github.com/yourusername/edge-computing',
+'https://edge-demo-link.com'
+)">
+                    <h3 class="font-bold text-xl mb-2">Edge Computing</h3>
+                    <p class="text-gray-500">Distributed Systems</p>
+                    <div class="project-overlay"><span class="text-white">View Project</span></div>
+                </div>
+
+                <!-- 3 -->
+                <div class="project-card bg-white p-6 rounded-xl shadow" onclick="openModal(
+'Secure Cloud Storage',
+'Client-side encrypted cloud storage.',
+'Java, Cryptography, Cloud',    
+['AES encryption','Authentication','Access control'],
+'Improved data confidentiality.',
+'https://github.com/yourusername/secure-cloud-storage',
+''
+)">
+                    <h3 class="font-bold text-xl mb-2">Secure Cloud Storage</h3>
+                    <p class="text-gray-500">Backend Security</p>
+                    <div class="project-overlay"><span class="text-white">View Project</span></div>
+                </div>
+
+                <!-- 4 -->
+                <div class="project-card bg-white p-6 rounded-xl shadow" onclick="openModal(
+'Mini Operating System',
+'Educational mini OS with basic kernel commands.',
+'Assembly, OS Concepts',
+['Bootloader','Command parser','File operations'],
+'Hands-on OS understanding.',
+'https://github.com/yourusername/mini-os',
+''
+)">
+                    <h3 class="font-bold text-xl mb-2">Mini Operating System</h3>
+                    <p class="text-gray-500">Systems</p>
+                    <div class="project-overlay"><span class="text-white">View Project</span></div>
+                </div>
+
+                <!-- 5 -->
+                <div class="project-card bg-white p-6 rounded-xl shadow" onclick="openModal(
+'Fake News Detection',
+'NLP-based fake news classifier.',
+'Python, NLP, ML',
+['Text preprocessing','TF-IDF','Classification'],
+'High accuracy on test data.',
+'https://github.com/yourusername/fake-news-detection',
+'https://nlp-demo-link.com'
+)">
+                    <h3 class="font-bold text-xl mb-2">Fake News Detection</h3>
+                    <p class="text-gray-500">AI / NLP</p>
+                    <div class="project-overlay"><span class="text-white">View Project</span></div>
+                </div>
+
+                <!-- 6 -->
+                <div class="project-card bg-white p-6 rounded-xl shadow" onclick="openModal(
+'Developer Portfolio',
+'Interactive developer portfolio.',
+'HTML, Tailwind CSS, JavaScript',
+['Responsive UI','Animations','Modals'],
+'Professional online presence.',
+'https://github.com/yourusername/portfolio',
+''
+)">
+                    <h3 class="font-bold text-xl mb-2">Developer Portfolio</h3>
+                    <p class="text-gray-500">Frontend</p>
+                    <div class="project-overlay"><span class="text-white">View Project</span></div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="py-20 bg-gray-900 text-white text-center">
+        <h2 class="text-4xl font-bold mb-6">Contact</h2>
+        <p class="text-gray-400">sarangkumar.dev@gmail.com</p>
+    </section>
+
+    <footer class="bg-black text-gray-400 py-6 text-center">
+        © 2025 Sarang Guldeokar
+    </footer>
+
+    <!-- FLOATING ICON BAR -->
+    <div class="fixed top-1/2 right-6 -translate-y-1/2 z-50 flex flex-col gap-4">
+
+        <a href="#about" class="group relative flex items-center">
+            <span class="absolute right-14 px-3 py-1 bg-gray-900 text-white text-sm rounded
+opacity-0 translate-x-2 transition-all duration-400
+group-hover:opacity-100 group-hover:translate-x-0">About</span>
+            <div class="w-11 h-11 bg-white rounded-full shadow-lg flex items-center justify-center
+transition-all duration-400 group-hover:scale-110
+group-hover:bg-blue-600 group-hover:text-white">
+                <i class="fas fa-user"></i>
+            </div>
+        </a>
+
+        <a href="#projects" class="group relative flex items-center">
+            <span class="absolute right-14 px-3 py-1 bg-gray-900 text-white text-sm rounded
+opacity-0 translate-x-2 transition-all duration-400
+group-hover:opacity-100 group-hover:translate-x-0">Projects</span>
+            <div class="w-11 h-11 bg-white rounded-full shadow-lg flex items-center justify-center
+transition-all duration-400 group-hover:scale-110
+group-hover:bg-blue-600 group-hover:text-white">
+                <i class="fas fa-code"></i>
+            </div>
+        </a>
+
+        <a href="#contact" class="group relative flex items-center">
+            <span class="absolute right-14 px-3 py-1 bg-gray-900 text-white text-sm rounded
+opacity-0 translate-x-2 transition-all duration-400
+group-hover:opacity-100 group-hover:translate-x-0">Contact</span>
+            <div class="w-11 h-11 bg-white rounded-full shadow-lg flex items-center justify-center
+transition-all duration-400 group-hover:scale-110
+group-hover:bg-blue-600 group-hover:text-white">
+                <i class="fas fa-envelope"></i>
+            </div>
+        </a>
+
+        <a href="https://github.com/" target="_blank" rel="noopener noreferrer"
+            class="group relative flex items-center">
+
+            <span class="absolute right-14 px-3 py-1 bg-gray-900 text-white text-sm rounded
+opacity-0 translate-x-2 transition-all duration-400
+group-hover:opacity-100 group-hover:translate-x-0">GitHub</span>
+            <div class="w-11 h-11 bg-white rounded-full shadow-lg flex items-center justify-center
+transition-all duration-400 group-hover:scale-110
+group-hover:bg-gray-900 group-hover:text-white">
+                <i class="fab fa-github"></i>
+            </div>
+        </a>
+
+        <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer"
+            class="group relative flex items-center">
+
+            <span class="absolute right-14 px-3 py-1 bg-gray-900 text-white text-sm rounded
+opacity-0 translate-x-2 transition-all duration-400
+group-hover:opacity-100 group-hover:translate-x-0">LinkedIn</span>
+            <div class="w-11 h-11 bg-white rounded-full shadow-lg flex items-center justify-center
+transition-all duration-400 group-hover:scale-110
+group-hover:bg-blue-700 group-hover:text-white">
+                <i class="fab fa-linkedin-in"></i>
+            </div>
+        </a>
+
+    </div>
+
+    <!-- MODAL -->
+    <div id="modal" class="modal">
+        <div class="modal-content relative">
+            <span class="modal-close" onclick="closeModal()">✕</span>
+
+            <h2 id="mTitle" class="text-3xl font-bold mb-4"></h2>
+            <p id="mDesc" class="mb-4 text-gray-600"></p>
+
+            <h3 class="font-semibold mb-2">Key Features</h3>
+            <ul id="mFeatures" class="list-disc list-inside text-gray-600 mb-4"></ul>
+
+            <h3 class="font-semibold mb-2">Tech Stack</h3>
+            <p id="mTech" class="text-gray-600 mb-4"></p>
+
+            <h3 class="font-semibold mb-2">Outcome</h3>
+            <p id="mOutcome" class="text-gray-600 mb-6"></p>
+
+            <div class="flex gap-4 flex-wrap">
+                <a id="mGithub" target="_blank" class="inline-flex items-center gap-2 px-5 py-2 rounded-full
+bg-gray-900 text-white transition-all duration-300 hover:scale-105">
+                    <i class="fab fa-github"></i> GitHub Repo
+                </a>
+
+                <a id="mDemo" target="_blank" class="inline-flex items-center gap-2 px-5 py-2 rounded-full
+bg-blue-600 text-white transition-all duration-300 hover:scale-105">
+                    <i class="fas fa-play-circle"></i> Live Demo
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function openModal(title, desc, tech, features, outcome, github, demo) {
+            mTitle.innerText = title;
+            mDesc.innerText = desc;
+            mTech.innerText = tech;
+            mOutcome.innerText = outcome;
+
+            mFeatures.innerHTML = "";
+            features.forEach(f => {
+                const li = document.createElement("li");
+                li.innerText = f;
+                mFeatures.appendChild(li);
+            });
+
+            mGithub.href = github || "#";
+            mDemo.href = demo || "#";
+            mGithub.style.display = github ? "inline-flex" : "none";
+            mDemo.style.display = demo ? "inline-flex" : "none";
+
+            modal.style.display = "flex";
+            setTimeout(() => modal.classList.add("show"), 10);
+        }
+
+        function closeModal() {
+            modal.classList.remove("show");
+            setTimeout(() => modal.style.display = "none", 300);
+        }
+    </script>
+
+    <script>
+        const canvas = document.getElementById("hero-canvas");
+        const ctx = canvas.getContext("2d");
+        function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+        resize(); addEventListener("resize", resize);
+
+        const symbols = [
+            "Java", "C++", "Python", "JavaScript", "SQL", "Git", "Linux", "Docker",
+            "API", "REST", "JWT", "OOP", "DSA", "Threads", "Memory",
+            "{ }", "</>", "[]", "()", "if()", "for()", "while()",
+            "Cloud", "AWS", "Edge", "AI", "ML", "Security"
+        ];
+
+        const particles = [...Array(40)].map(() => ({
+            t: symbols[Math.floor(Math.random() * symbols.length)],
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            s: Math.random() * 10 + 16,
+            vx: (Math.random() - .5) * .25,
+            vy: (Math.random() - .5) * .25,
+            o: Math.random() * .4 + .4
+        }));
+
+        (function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                ctx.font = `${p.s}px monospace`;
+                ctx.fillStyle = `rgba(99,102,241,${p.o})`;
+                ctx.fillText(p.t, p.x, p.y);
+                p.x += p.vx; p.y += p.vy;
+                if (p.x < -100) p.x = canvas.width + 50;
+                if (p.x > canvas.width + 100) p.x = -50;
+                if (p.y < -50) p.y = canvas.height + 50;
+                if (p.y > canvas.height + 50) p.y = -50;
+            });
+            requestAnimationFrame(animate);
+        })();
+    </script>
+    <!-- RESUME MODAL -->
+    <div id="resumeModal" class="fixed inset-0 z-[60] flex items-center justify-center
+            bg-black/80 backdrop-blur
+            opacity-0 pointer-events-none
+            transition-opacity duration-500
+            ease-[cubic-bezier(0.16,1,0.3,1)]">
+
+
+        <div class="relative w-[87vw] h-[87vh] bg-white rounded-xl overflow-hidden shadow-2xl
+         transform scale-95
+         transition-transform duration-500
+         ease-[cubic-bezier(0.16,1,0.3,1)]">
+
+
+            <!-- CLOSE BUTTON -->
+            <button onclick="closeResume()" class="absolute top-4 right-4 z-10
+             w-10 h-10 rounded-full
+             bg-gray-900 text-white
+             flex items-center justify-center
+             hover:bg-red-600 transition">
+                ✕
+            </button>
+
+            <!-- RESUME VIEW -->
+            <iframe src="resume.pdf" class="w-full h-full" frameborder="0">
+            </iframe>
+
+            <script>
+                function openResume() {
+                    const modal = document.getElementById("resumeModal");
+                    const box = modal.querySelector("div");
+
+                    modal.classList.remove("opacity-0", "pointer-events-none");
+                    modal.classList.add("opacity-100");
+
+                    box.classList.remove("scale-95");
+                    box.classList.add("scale-100");
+                }
+
+                function closeResume() {
+                    const modal = document.getElementById("resumeModal");
+                    const box = modal.querySelector("div");
+
+                    modal.classList.remove("opacity-100");
+                    modal.classList.add("opacity-0", "pointer-events-none");
+
+                    box.classList.remove("scale-100");
+                    box.classList.add("scale-95");
+                }
+            </script>
+
+
+        </div>
+    </div>
+
+
+</body>
+
+</html>
